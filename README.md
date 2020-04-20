@@ -6,4 +6,6 @@ This bot helps the unicorn beacon - [trx.epfl.ch/beacon/](trx.epfl.ch/beacon/) -
 
 This bot publishes a randomly generated sentence in 5 minute intervals starting from 2m30s of each hour.
 
-_Dependencies_: tweepy - a library for connecting to twitter and posting tweets
+_Dependencies_: 
+ - tweepy - a library for connecting to twitter and posting tweets
+ - Beautiful soup 4 - a library for extracting the current beacon number from the unicorn beacon website
