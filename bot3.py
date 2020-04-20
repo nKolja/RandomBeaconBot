@@ -144,7 +144,6 @@ def main():
             api.update_status(tweet)
             #print(tweet)
 
-            return 0
             #Sleep for 5 minutes
             time.sleep(300)
 
