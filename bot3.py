@@ -66,14 +66,9 @@ def get_rand_str():
     rand_str += sound_1[random.randint(0,len(sound_1)-1)] + ", "
     rand_str += sound_2[random.randint(0,len(sound_2)-1)]
     rand_str += stop_symbol[random.randint(0,len(stop_symbol)-1)]
-
-    #curr_len = len(rand_str)
-    #rand_str += str(base64.b64encode(os.urandom(8)))[2:]
-    #rand_str = rand_str[0:curr_len+6] + "!"
-
-
-    
+ 
     return rand_str
+
 
 def get_time():
 
@@ -83,6 +78,7 @@ def get_time():
     sc = now.second
 
     return hr, mn, sc
+
 
 def next_number_time(hr, mn):
 
@@ -100,6 +96,7 @@ def next_number_time(hr, mn):
 
     return x, y
 
+
 def wait_time(mn, sc):
     
     now = (60*mn + sc) % 300
@@ -110,6 +107,7 @@ def wait_time(mn, sc):
         left += 150
 
     return left
+
 
 def main():
     
