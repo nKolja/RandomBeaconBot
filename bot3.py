@@ -37,7 +37,7 @@ def get_api():
     CONSUMER_API_SECRET_KEY = "API_SECRET_KEY"
     ACCESS_TOKEN = "ACCESS_TOKEN"
     ACCESS_TOKEN_SECRET = "ACCESS_TOKEN_SECRET"
-    
+
     # Authenticate to Twitter
     auth = tweepy.OAuthHandler(CONSUMER_API_KEY, CONSUMER_API_SECRET_KEY)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -66,9 +66,14 @@ def get_rand_str():
     rand_str += sound_1[random.randint(0,len(sound_1)-1)] + ", "
     rand_str += sound_2[random.randint(0,len(sound_2)-1)]
     rand_str += stop_symbol[random.randint(0,len(stop_symbol)-1)]
- 
-    return rand_str
 
+    #curr_len = len(rand_str)
+    #rand_str += str(base64.b64encode(os.urandom(8)))[2:]
+    #rand_str = rand_str[0:curr_len+6] + "!"
+
+
+    
+    return rand_str
 
 def get_time():
 
@@ -78,7 +83,6 @@ def get_time():
     sc = now.second
 
     return hr, mn, sc
-
 
 def next_number_time(hr, mn):
 
@@ -96,7 +100,6 @@ def next_number_time(hr, mn):
 
     return x, y
 
-
 def wait_time(mn, sc):
     
     now = (60*mn + sc) % 300
@@ -107,7 +110,6 @@ def wait_time(mn, sc):
         left += 150
 
     return left
-
 
 def main():
     
@@ -124,28 +126,27 @@ def main():
 
         time.sleep(wait)
 
-        #Do a time-check every 1000 tweets
-        for i in range(1000):
 
-            hr, mn, _ = get_time()
-            hr, mn = next_number_time(hr, mn)
-
+        while True:
             webpage = "http://trx.epfl.ch/beacon/index.php"
             soup = BeautifulSoup(urlopen(webpage), "html.parser")
-            beacon_number = soup.find_all("div", attrs={"class":"section"})[5].text.strip()[38:43]
+            unicorn_webpage = soup.find_all("div", attrs={"class":"section"})        
+            if (len(unicorn_webpage) >= 5):
+                break
+            time.sleep(1)
 
-            randstring = get_rand_str()
+               
+        beacon_number = unicorn_webpage[5].text.strip()[38:43]
 
-            #Encoding strings into utf-8 is used for Python 2 and 3 compactibility
-            tweet = "#unicorn_beacon Entropy for beacon n\N{DEGREE SIGN} " + beacon_number + " is: \"" + randstring + "\""
-            
+        randstring = get_rand_str()
 
-            #Post a new tweet
-            api.update_status(tweet)
-            #print(tweet)
+        tweet = "#unicorn_beacon Entropy for beacon n\N{DEGREE SIGN} " + beacon_number + " is: \"" + randstring + "\""
 
-            #Sleep for 5 minutes
-            time.sleep(300)
+        #Post a new tweet
+        api.update_status(tweet)
+        #print(tweet)
+
+        time.sleep(5)
 
 
     return 0
