@@ -8,7 +8,7 @@ import datetime
 
 #Read html
 from bs4 import BeautifulSoup
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 
 
 
@@ -114,6 +114,7 @@ def wait_time(mn, sc):
 def main():
     
     api = get_api()
+    webpage = "http://trx.epfl.ch/beacon/index.php"
 
     while True:
 
@@ -128,15 +129,14 @@ def main():
 
 
         while True:
-            webpage = "http://trx.epfl.ch/beacon/index.php"
-            soup = BeautifulSoup(urlopen(webpage), "html.parser")
-            unicorn_webpage = soup.find_all("div", attrs={"class":"section"})        
-            if (len(unicorn_webpage) >= 5):
+            try: 
+                response = urlopen(webpage)
+                soup = BeautifulSoup(response, "html.parser")
+                unicorn_webpage = soup.find_all("div", attrs={"class":"section"})        
+                beacon_number = unicorn_webpage[5].text.strip()[38:43]
                 break
-            time.sleep(1)
-
-               
-        beacon_number = unicorn_webpage[5].text.strip()[38:43]
+            except Exception:
+                time.sleep(5)
 
         randstring = get_rand_str()
 
